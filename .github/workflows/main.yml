@@ -26,11 +26,11 @@ jobs:
                 username: ${{ secrets.DOCKERHUB_USERNAME }}
                 password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-            - name: build docker image
-              run: docker build -t ph3523/nlw.journey.api:${{ steps.generate_sha.outputs.sha }} .
-
-            - name: Push image
-              run: |
-                docker push ph3523/nlw.journey.api:${{ steps.generate_sha.outputs.sha }}
-                docker tag ph3523/nlw.journey.api:${{ steps.generate_sha.outputs.sha }} ph3523/nlw.journey.api:latest
-                docker push ph3523/nlw.journey.api:latest
+            - name: Build and Push
+              uses: docker/build-push-action@v6
+              with:
+                context: .
+                push: true
+                tags: |
+                  ph3523/nlw.journey.api:${{ steps.generate_sha.outputs.sha }}
+                  ph3523/nlw.journey.api:latest
